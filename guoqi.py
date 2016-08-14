@@ -4,7 +4,6 @@
 # :set encoding=utf-8
 
 import turtle
-import time
 from math import *
 
 def get_pentagram_side(radius):
