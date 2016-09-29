@@ -26,10 +26,49 @@ def drawline(t, x0, y0, x1, y1):
    t.fd(x0*UNIT)
    t.rt(90)
    t.fd(y0*UNIT)
-   t.lt(tan2angle((x1-x0)/(y1-y0)))
+   if y1 == y0:
+       turn = 90
+       if x1 < x0:
+           turn += 180
+   else:
+       turn = tan2angle((x1-x0) * 1.0 /(y1-y0))
+       if y1 < y0:
+           turn += 180
+   t.lt(turn)
    t.pendown()
    t.fd(sqrt(pow(x1-x0, 2) + pow(y1-y0, 2)) * UNIT)
    t.penup()
+
+def drawlines(t, li, fill=False): 
+    x0 = li[0][0]
+    y0 = li[0][1]
+    topleft(t)
+    t.fd(x0 * UNIT)
+    t.rt(90)
+    t.fd(y0 * UNIT)
+
+    if fill == True:
+        t.begin_fill()
+    for i in range(len(li) - 1):
+       x0 = li[i][0]
+       y0 = li[i][1]
+       x1 = li[i+1][0]
+       y1 = li[i+1][1]
+       if y1 == y0:
+           turn = 90
+           if x1 < x0:
+               turn += 180
+       else:
+           turn = tan2angle((x1-x0) * 1.0 /(y1-y0))
+           if y1 < y0:
+               turn += 180
+       t.lt(turn)
+       t.pendown()
+       t.fd(sqrt(pow(x1-x0, 2) + pow(y1-y0, 2)) * UNIT)
+       t.penup()
+       t.rt(t.heading() + 90)
+    if fill == True:
+        t.end_fill()
 
 def drawrect(t, x0, y0, x1, y1):
     topleft(t)
@@ -74,9 +113,14 @@ tess.penup()
 
 tess.speed(5)
 draw_flag(tess, color='#fff',w=W,h=H)
-tess.speed(0)
 
 tess.color('grey')
+#drawline(tess, 10, 20, 30, 40)
+#drawline(tess, 20, 10, 30, 40)
+#drawline(tess, 20, 10, 5, 5)
+#drawlines(tess, [(10,10),(10,20),(20,20),(20,10),(10,10)], True)
+
+tess.speed(0)
 drawline(tess, 0, 0, 60, 30)
 drawline(tess, 60, 0, 0, 30)
 
@@ -107,6 +151,12 @@ drawrect(tess,0, 20, 25, 30)
 
 drawrect(tess,33, 18, 60, 30)
 drawrect(tess,35, 20, 60, 30)
+
+tess.color('red')
+tess.speed(5)
+bigcross=[(27,0),(27,12),(0,12),(0,18),(27,18),(27,30),(33,30),
+                (33,18),(60,18),(60,12),(33,12),(33,0),(27,0)]
+drawlines(tess, bigcross, True)
 
 wn.exitonclick()
 
