@@ -41,7 +41,7 @@ if __name__ == '__main__':
     argn = len(sys.argv)
     if argn > 1:
         if sys.argv[1] == '-h' or sys.argv[1] == '--help':
-            print('%s total add|sub|mix min max'%(sys.argv[0]))
+            print('%s total [add|sub|mix] [min] [max] [hardmax]'%(sys.argv[0]))
             sys.exit(0)
         total = int(sys.argv[1])
     if argn > 2:
@@ -50,6 +50,10 @@ if __name__ == '__main__':
         minnum = int(sys.argv[3])
     if argn > 4:
         maxnum = int(sys.argv[4])
+    if argn > 5:
+        hardmax = int(sys.argv[5])
+    if maxnum > hardmax:
+        raise Exception('error input: maxnum %s is too large. hardmax is %s' % (maxnum, hardmax))
 
     if pattern == 'mix':
         add = total / 2
